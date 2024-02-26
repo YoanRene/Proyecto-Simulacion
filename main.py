@@ -66,6 +66,7 @@ def simulate_system(arrival_distribution, service_distributions, num_customers,m
     max_queue =0
     sum_queue = 0
     count_queue = 0
+    customers_out = 0
 
     #Inicializamos los servidores
     servers = []
@@ -98,8 +99,12 @@ def simulate_system(arrival_distribution, service_distributions, num_customers,m
         return np.random.choice(servers[server_index].service_distribution)
     #Retorna el cliente con el tiempo de espera mas grande
     def get_longest_waiting_customer():
-        if len(customers_queue) > 0:
-            return heapq.heappop(customers_queue)
+        while len(customers_queue) > 0:
+            costumer = heapq.heappop(customers_queue)
+            if current_time - costumer.arrival_time > customer_max_wait_time:
+                customers_out +=1
+                continue
+            return costumer
         else:
             return None
     #Obtenemos el tiempo en que llega el primer cliente
@@ -134,9 +139,12 @@ def simulate_system(arrival_distribution, service_distributions, num_customers,m
             else:
                 log(f'\t-Cliente en cola\n')
                 #Si no hay servidores libres lo ponemos en la cola
-                heapq.heappush(customers_queue, customer)
-                if len(customers_queue) > max_queue:
-                    max_queue = len(customers_queue)
+                if len(customers_queue) < queue_max_capacity:
+                    heapq.heappush(customers_queue, customer)
+                    if len(customers_queue) > max_queue:
+                        max_queue = len(customers_queue)
+                else:
+                    customers_out +=1
             #Calculamos cuando llegaria el proximo cliente
             next_arrival_time = get_next_arrival_time()
         else:
@@ -177,6 +185,7 @@ def simulate_system(arrival_distribution, service_distributions, num_customers,m
     log(f'Promedio de clientes en cola:{round(sum_queue/count_queue,2)}',"info")
     log(f'Maximo Tiempo de Espera: {max(waiting_times)}','info')
     log(f"Tiempo de espera promedio: {average_waiting_time}","info")
+    log(f'Clientes que abandonan sin ser atendidos: {customers_out}','info')
 
 arrival_distribution = "exponential"
 scale=1
@@ -187,6 +196,10 @@ high = 2.0
 
 #arrival_distribution = "poisson"
 lam = 1.0
+
+#Condiciones de que un cliente deje la cola
+queue_max_capacity = np.inf
+customer_max_wait_time = np.inf
 
 # Distribuciones de servicio en los servidores
 service_distributions = [
