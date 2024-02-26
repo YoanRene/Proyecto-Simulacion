@@ -186,6 +186,18 @@ def simulate_system(arrival_distribution, service_distributions, num_customers,m
     log(f'Maximo Tiempo de Espera: {max(waiting_times)}','info')
     log(f"Tiempo de espera promedio: {average_waiting_time}","info")
     log(f'Clientes que abandonan sin ser atendidos: {customers_out}','info')
+    return {
+        'total_time':current_time,
+        "customers_served":customers_served,
+        "customers_count":clientes,
+        'customers_out':customers_out,
+        'max_queue':max_queue,
+        'average_queue':sum_queue/count_queue,
+        'max_waiting_time':max(waiting_times),
+        'average_waiting_time':average_waiting_time,
+        'servers':servers,
+        'customers':customers
+            }
 
 arrival_distribution = "exponential"
 scale=1
@@ -204,7 +216,7 @@ customer_max_wait_time = np.inf
 # Distribuciones de servicio en los servidores
 service_distributions = [
     {'distribution': 'exponential', 'lam': 1},
-    {'distribution': 'poisson', 'lam': 1},
+    {'distribution': 'poisson', 'lam': 3},
     #{'distribution': 'normal', 'loc': 2.5, 'scale': 8},
     #{'distribution': 'normal', 'loc': 5, 'scale': 10},
     #{'distribution': 'poisson', 'lam': 4},
@@ -216,9 +228,10 @@ max_time = 1000
 debug = False
 slow=False
 taglist = [
-    "servers",
-    "info",
-    #"initial"
+    #"servers",
+    #"info",
+    #"initial",
+    "simulation"
     ]
 def log(message,TAG=""):
     if debug or TAG in taglist:
@@ -227,4 +240,11 @@ log(f'Simulando {len(service_distributions)} servidores.',"initial")
 log(f'Distribucion de llegada: {arrival_distribution}({scale if arrival_distribution == "exponential" else (low, high if arrival_distribution == "uniform" else lam)})',"initial")
 log(f'Detener la simulacion despues de atender {num_customers} clientes o pasar 1000 unidades de tiempo',"initial")
 log("_____________________________________________________________","initial")
-simulate_system(arrival_distribution, service_distributions, num_customers,max_time)
+results = []
+for i in range(100):
+    results.append(simulate_system(arrival_distribution, service_distributions, num_customers,max_time))
+    log(f'Simulacion {i+1} completada','simulation log')
+log(f'Promedio de tiempo de espera: {sum([r["average_waiting_time"] for r in results])/len(results)}',"simulation")
+log(f'Promedio de clientes en cola: {sum([r["average_queue"] for r in results])/len(results)}',"simulation")
+log(f'Promedio de clientes atendidos: {sum([r["customers_served"] for r in results])/len(results)}',"simulation")
+log(f'Promedio de clientes que abandonaron sin ser atendidos: {sum([r["customers_out"] for r in results])/len(results)}',"simulation")
