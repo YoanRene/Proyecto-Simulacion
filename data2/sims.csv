@@ -1,0 +1,9 @@
+0,1,2,3,4,5,6,7,8,9,10,11
+exponential,exponential,exponential,exponential,uniform,uniform,uniform,uniform,poisson,poisson,poisson,poisson
+1,1,1,1,1,1,1,1,1,1,1,1
+"[{'distribution': 'exponential', 'lam': 1}]","[{'distribution': 'exponential', 'lam': 1}, {'distribution': 'poisson', 'lam': 3}]","[{'distribution': 'exponential', 'lam': 1}, {'distribution': 'poisson', 'lam': 3}, {'distribution': 'poisson', 'lam': 3}]","[{'distribution': 'poisson', 'lam': 1}, {'distribution': 'poisson', 'lam': 1}]","[{'distribution': 'exponential', 'lam': 1}]","[{'distribution': 'exponential', 'lam': 1}, {'distribution': 'poisson', 'lam': 3}]","[{'distribution': 'exponential', 'lam': 1}, {'distribution': 'poisson', 'lam': 3}, {'distribution': 'poisson', 'lam': 3}]","[{'distribution': 'poisson', 'lam': 1}, {'distribution': 'poisson', 'lam': 1}]","[{'distribution': 'exponential', 'lam': 1}]","[{'distribution': 'exponential', 'lam': 1}, {'distribution': 'poisson', 'lam': 3}]","[{'distribution': 'exponential', 'lam': 1}, {'distribution': 'poisson', 'lam': 3}, {'distribution': 'poisson', 'lam': 3}]","[{'distribution': 'poisson', 'lam': 1}, {'distribution': 'poisson', 'lam': 1}]"
+1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000
+1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000
+2,2,2,2,2,2,2,2,2,2,2,2
+4,4,4,4,4,4,4,4,4,4,4,4
+1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0

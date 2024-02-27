@@ -1,63 +1,10 @@
 import numpy as np
 import heapq
 import time
+from customer import Customer
+from server import Server
 
-#Clase para almacenar los valores de los clientes
-class Customer:
-    def __init__(self, arrival_time):
-        self.arrival_time = arrival_time
-        self.service_time = 0
-
-    def __lt__(self, other):
-        return self.arrival_time < other.arrival_time
-    
-    def time_waited(self,current_time):
-        #TODO NO se que hacer cuando la simulacion para por tiempo y hay gente en la cola, de momento se calcula con el tiempo final pasado por parametro
-        return self.service_time -self.arrival_time if self.service_time!=0 else current_time-self.arrival_time
-
-class Server:
-    def __init__(self, service_distribution,**kwargs):
-        self.service_distribution = service_distribution
-        self.distribution_params = kwargs
-        self.current_customer = None
-        self.service_end_time = None
-        self.idle_time = 0
-        self.last_service_time = 0
-        self.customers_served = 0
-    def __str__(self):
-        return f'{self.service_distribution}, {self.distribution_params}'
-    def is_busy(self):
-        return self.current_customer is not None
-
-    def start_service(self, customer, current_time):
-        self.customers_served +=1
-        customer.service_time = current_time
-        self.current_customer = customer
-        service_time = self.generate_service_time()
-        self.service_end_time = current_time + service_time
-        self.idle_time += current_time - self.last_service_time
-        self.last_service_time = self.service_end_time
-        return service_time
-
-    def end_service(self):
-        service_time = self.service_end_time - self.current_customer.arrival_time
-        self.current_customer = None
-        self.service_end_time = None
-        return service_time
-    def generate_service_time(self):
-        if self.service_distribution == 'exponential':
-            lam = self.distribution_params.get('lam', 1.0)
-            return np.random.exponential(scale=1.0 / lam)
-        elif self.service_distribution == 'poisson':
-            lam = self.distribution_params.get('lam', 1.0)
-            return np.random.poisson(lam=lam)
-        elif self.service_distribution == 'normal':
-            loc = self.distribution_params.get('loc', 1.0)
-            scale = self.distribution_params.get('scale', 0.1)
-            return abs(np.random.normal(loc=loc, scale=scale))
-        else:
-            raise ValueError('Invalid distribution specified')
-def simulate_system(arrival_distribution, service_distributions, num_customers,max_time):
+def simulate_system(arrival_distribution, service_distributions, num_customers,max_time,scale=1,low=1.0,high=3.0,lam=1.0,customer_max_wait_time=np.inf,queue_max_capacity=np.inf):
     #Empezamos con una lista vacia de clientes y el tiempo en 0
     customers = []
     customers_queue = []
@@ -198,7 +145,7 @@ def simulate_system(arrival_distribution, service_distributions, num_customers,m
         'servers':servers,
         'customers':customers
             }
-
+'''
 arrival_distribution = "exponential"
 scale=1
 
@@ -225,6 +172,7 @@ service_distributions = [
 #Condiciones de parada
 num_customers = 100000
 max_time = 1000
+'''
 debug = False
 slow=False
 taglist = [
@@ -236,6 +184,7 @@ taglist = [
 def log(message,TAG=""):
     if debug or TAG in taglist:
         print(message)
+'''
 log(f'Simulando {len(service_distributions)} servidores.',"initial")
 log(f'Distribucion de llegada: {arrival_distribution}({scale if arrival_distribution == "exponential" else (low, high if arrival_distribution == "uniform" else lam)})',"initial")
 log(f'Detener la simulacion despues de atender {num_customers} clientes o pasar 1000 unidades de tiempo',"initial")
@@ -248,3 +197,4 @@ log(f'Promedio de tiempo de espera: {sum([r["average_waiting_time"] for r in res
 log(f'Promedio de clientes en cola: {sum([r["average_queue"] for r in results])/len(results)}',"simulation")
 log(f'Promedio de clientes atendidos: {sum([r["customers_served"] for r in results])/len(results)}',"simulation")
 log(f'Promedio de clientes que abandonaron sin ser atendidos: {sum([r["customers_out"] for r in results])/len(results)}',"simulation")
+'''

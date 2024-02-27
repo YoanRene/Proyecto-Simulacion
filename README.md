@@ -47,9 +47,6 @@ Realizamos una serie de experimentos  con diferentes configuraciones del sistema
 - Aumentar la tasa de llegadas de cliente es inversamente proporcional a aumentar el numero de servidores
 - Dsiminuir el numero de servidores y aumentar la tasa de clientes aumenta el porcetaje de clientes que abandonan la cola sin ser atendidos
 
-### Necesidad de realizar el analisis estadistico de la simulacion
-//TODO
-
 ### Analisis de parada de la simulacion
 Utilizamos dos criterios de parada para la simulacion:
 - Numero de clientes atendidos: detenemos la simulacion despues de haber atendido determinado numero de clientes.
